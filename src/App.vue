@@ -6,7 +6,11 @@
 
 <script>
   let html
-    , handleFontSize = () => html.style.fontSize = innerWidth / 10 + 'px'
+    , handleFontSize = () => {
+    let fontSize = innerWidth / 10
+    const MAX_SIZE = 50
+    html.style.fontSize = fontSize > MAX_SIZE ? MAX_SIZE : fontSize + 'px'
+  }
   document.addEventListener('DOMContentLoaded', () => {
     html = document.querySelector('html')
     handleFontSize()

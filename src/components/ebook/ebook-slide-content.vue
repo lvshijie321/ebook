@@ -23,7 +23,9 @@
                     <img :src="cover" class="slide-contents-book-img">
                 </div>
                 <div class="slide-contents-book-info-wrapper">
-                    <div class="slide-contents-book-title">{{metaData.title}}</div>
+                    <div class="slide-contents-book-title">
+                      <span class="slide-contents-book-title-text">{{metaData.title}}</span>
+                    </div>
                     <div class="slide-contents-book-author">{{metaData.creator}}</div>
                 </div>
                 <div class="slide-contents-book-progress-wrapper">
@@ -188,7 +190,11 @@
                 .slide-contents-book-title {
                     font-size: px2rem(14);
                     width: px2rem(153.75);
+                  @include left;
+                  .slide-contents-book-title-text {
+
                     @include ellipsis2(2);
+                  }
                 }
 
                 .slide-contents-book-author {
