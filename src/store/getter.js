@@ -15,5 +15,7 @@ export default  {
     metaData: state => state.book.metaData,
     navigation: state => state.book.navigation,
     offsetY: state => state.book.offsetY,
-    // searchVisible: state => state.book.searchVisible,
+    hotSearchOffsetY: state => state.store.hotSearchOffsetY,
+    flapCardVisible: state => state.store.flapCardVisible,
+    // searchVisible: state => state.store.book.searchVisible,
 }

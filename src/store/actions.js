@@ -48,6 +48,12 @@ export default {
     setOffsetY: ({ commit }, payload) => {
         return commit('SET_OFFSET_Y', payload)
     },
+    setHotSearchOffsetY:({commit}, payload) => {
+      return commit('SET_HOT_SEARCH_OFFSET_Y', payload)
+    },
+    setFlapCardVisible:({commit}, payload) => {
+      return commit('SET_FLAP_CARD_VISIBLE', payload)
+    },
     // setSearchVisible: ({ commit }, payload) => {
     //     return commit('SET_SEARCH_VISIBLE', payload)
     // },

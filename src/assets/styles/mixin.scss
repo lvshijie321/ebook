@@ -1,6 +1,8 @@
 $animationTime: .2s;
 $animationType: linear;
 $ratio: 375 / 10;
+$animationTime: .2s;
+$animationType: linear;
 
 @function px2rem($px) {
   @return $px / $ratio + rem;
@@ -38,4 +40,28 @@ $ratio: 375 / 10;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: px2rem(16);
+}
+@mixin absCenter{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+@mixin columnLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.icon {
+  color: #666;
+  font-size: px2rem(16);
+}
+
+.title {
+  color: #666;
+  font-size: px2rem(16);
+  font-weight: bold;
 }
