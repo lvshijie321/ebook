@@ -1,5 +1,5 @@
 export const flapCardList = [
-  {
+  {//pink
     r: 255,
     g: 102,
     _g: 102,
@@ -8,9 +8,10 @@ export const flapCardList = [
     imgRight: 'url(' + require('@/assets/images/gift-right.png') + ')',
     backgroundSize: '50% 50%',
     zIndex: 100,
+    _zIndex: 100,
     rotateDegree: 0
   },
-  {
+  {//blue
     r: 74,
     g: 171,
     _g: 171,
@@ -19,9 +20,11 @@ export const flapCardList = [
     imgRight: 'url(' + require('@/assets/images/compass-right.png') + ')',
     backgroundSize: '50% 50%',
     zIndex: 99,
+
+    _zIndex: 99,
     rotateDegree: 0
   },
-  {
+  {//yellow
     r: 255,
     g: 198,
     _g: 198,
@@ -30,6 +33,7 @@ export const flapCardList = [
     imgRight: 'url(' + require('@/assets/images/star-right.png') + ')',
     backgroundSize: '50% 50%',
     zIndex: 98,
+    _zIndex: 98,
     rotateDegree: 0
   },
   {
@@ -41,9 +45,10 @@ export const flapCardList = [
     imgRight: 'url(' + require('@/assets/images/heart-right.png') + ')',
     backgroundSize: '50% 50%',
     zIndex: 97,
+    _zIndex: 97,
     rotateDegree: 0
   },
-  {
+  {//green
     r: 59,
     g: 201,
     _g: 201,
@@ -52,6 +57,7 @@ export const flapCardList = [
     imgRight: 'url(' + require('@/assets/images/crown-right.png') + ')',
     backgroundSize: '50% 50%',
     zIndex: 96,
+    _zIndex: 96,
     rotateDegree: 0
   }
 ]
