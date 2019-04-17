@@ -2,13 +2,9 @@
   <div class="store-home">
     <search-bar/>
     <scroll ref="scroll" :top="scrollTop" @onScroll="onScroll">
-      <div>11111</div>
-      <div>11111</div>
-      <div>11111</div><div>11111</div>
-      <div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div><div>11111</div>
 
     </scroll>
-    <flap-card />
+    <flap-card :data="random"/>
   </div>
 </template>
 
@@ -17,6 +13,7 @@
   import Scroll from '../../components/common/Scroll'
   import {storeHomeMixin} from "../../utils/mixin";
   import FlapCard from '../../components/home/flap-card'
+  import {home} from "../../api/store";
 
   export default {
     name: "storeIndex",
@@ -29,7 +26,18 @@
     data() {
       return {
         scrollTop: 94,
+        random: null,
       }
+    },
+    mounted() {
+      home().then(res => {
+        if(res && res.status == '200') {
+          const randomIndex = Math.floor(Math.random() * res.data.random.length)
+          this.random = res.data.random[randomIndex]
+        }
+      }).catch(err => {
+        debugger
+      })
     },
     methods: {
       onScroll(offsetY) {

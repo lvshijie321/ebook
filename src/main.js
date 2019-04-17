@@ -6,6 +6,7 @@ import i18n from './lang'
 import './assets/styles/global.scss'
 import './assets/iconfont/icomoon.css'
 import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
+import './mock'
 new VConsole() // 初始化
 
 Vue.config.productionTip = false

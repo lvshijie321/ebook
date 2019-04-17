@@ -86,7 +86,8 @@ module.exports = {
   plugins: [
 
     new webpack.DefinePlugin({
-      "process.env.VUE_APP_RES_URL": JSON.stringify(process.env.VUE_APP_RES_URL)
+      "process.env.VUE_APP_RES_URL": JSON.stringify(process.env.VUE_APP_RES_URL),
+      "process.env.VUE_APP_BASE_URL": JSON.stringify(process.env.VUE_APP_BASE_URL),
     })
   ]
 };

@@ -5,11 +5,12 @@
   "author": "lvshijie <lvshijie@aiwending.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env VUE_APP_RES_URL=http://192.168.100.137:4810 webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
+    "dev": "cross-env VUE_APP_RES_URL=http://192.168.100.137:4810 VUE_APP_BASE_URL=http://192.168.100.137:8080 webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "epubjs": "^0.3.83",
     "vconsole": "^3.3.0",
     "vue": "^2.6.6",
@@ -36,6 +37,7 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "mockjs": "^1.0.1-beta3",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",

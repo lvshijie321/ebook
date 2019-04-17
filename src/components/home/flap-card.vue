@@ -26,6 +26,9 @@
   export default {
     name: "flap-card",
     mixins: [storeHomeMixin],
+    props: {
+      data: Object
+    },
     data() {
       return {
         flapCardList,
@@ -129,8 +132,16 @@
       },
       startFlapCardAnimation() {
         this.runFlapCardAnimation = true
+        setTimeout(() => this.runPointAnimation = false, 750)
+
+
+        setTimeout(() => {
+          this.runFlapCardAnimation = false
+          this.stopFlapCardAnimation()
+        }, 2500)
         setTimeout(() => {
           this.runPointAnimation = true
+
           this.prepare()
           this._timer = setInterval(() => {
             this.flapCardRotate()
@@ -179,8 +190,10 @@
       height: px2rem(64);
       border-radius: px2rem(5);
       background: #ffffff;
+      transform: scale(0);
+      opacity: 0;
       &.animation {
-        animation: flap-card-move .3s ease-in;
+        animation: flap-card-move .3s ease-in both;
       }
       @keyframes flap-card-move {
         0% {
