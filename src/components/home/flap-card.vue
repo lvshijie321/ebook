@@ -1,6 +1,6 @@
 <template>
   <div class="flap-card-wrapper" v-show="flapCardVisible">
-    <div class="flap-card-bg" :class="{ animation: runFlapCardAnimation }">
+    <div class="flap-card-bg" :class="{ animation: runFlapCardAnimation }" v-show="runFlapCardAnimation">
       <div class="flap-card" v-for="(item, index) in flapCardList" :key="index" :style="{ zIndex: item.zIndex}">
         <div class="point-wrapper">
           <div class="point" :class="{animation: runPointAnimation }" v-for="(item, index) in pointList" :key="index"></div>
@@ -13,6 +13,19 @@
         </div>
       </div>
     </div>
+    <div class="book-card" :class="{'animation': runBookCardAnimation}" v-show="runBookCardAnimation">
+      <div class="book-card-wrapper">
+        <div class="img-wrapper">
+          <img class="img" :src="data ? data.cover : ''">
+        </div>
+        <div class="content-wrapper">
+          <div class="content-title">{{data ? data.title : ''}}</div>
+          <div class="content-author sub-title-medium">{{ data ? data.author : ''}}</div>
+          <div class="content-category">{{categoryText()}}</div>
+        </div>
+        <div class="read-btn" @click.stop="showBookDetail(data)">{{$t('home.readNow')}}</div>
+      </div>
+    </div>
     <div class="close-btn-wrapper" @click="close">
       <div class="icon-close"></div>
     </div>
@@ -21,7 +34,7 @@
 
 <script>
   import {storeHomeMixin} from "../../utils/mixin";
-  import {flapCardList} from "../../utils/store";
+  import {flapCardList, categoryText} from "../../utils/store";
 
   export default {
     name: "flap-card",
@@ -38,9 +51,13 @@
         runFlapCardAnimation: false,
         pointList: [],
         runPointAnimation: false,
+        runBookCardAnimation: false,
       }
     },
     methods: {
+      categoryText() {
+        this.data && categoryText(this.data.category, this)
+      },
       createPoints() {
         Array.from({length: 18}).forEach((item, index) => {
           this.pointList.push(`point${index}`)
@@ -132,12 +149,13 @@
       },
       startFlapCardAnimation() {
         this.runFlapCardAnimation = true
-        setTimeout(() => this.runPointAnimation = false, 750)
+        this.timeout1 = setTimeout(() => this.runPointAnimation = false, 750)
 
 
-        setTimeout(() => {
+        this.timeout2 = setTimeout(() => {
           this.runFlapCardAnimation = false
-          this.stopFlapCardAnimation()
+          this.runBookCardAnimation = true
+          this.stopFlapCardAnimation(false)
         }, 2500)
         setTimeout(() => {
           this.runPointAnimation = true
@@ -148,15 +166,20 @@
           }, this.timestamp)
         }, 300)
       },
-      stopFlapCardAnimation() {
+      stopFlapCardAnimation(flag) {
         clearInterval(this._timer)
         this.front = 0
         this.back = 1
+        this.runFlapCardAnimation = false
+        this.runPointAnimation = false
+        flag && (this.runBookCardAnimation = false)
         this.flapCardList.forEach(item => {
           item.zIndex = item._zIndex
           item.rotateDegree = 0
           item._g = item.g
         })
+        this.timeout2 && clearInterval(this.timeout2)
+        this.timeout1 && clearInterval(this.timeout1)
       }
     }
     ,
@@ -167,7 +190,7 @@
       flapCardVisible(newValue) {
         newValue
           ? this.startFlapCardAnimation()
-          : this.stopFlapCardAnimation()
+          : this.stopFlapCardAnimation(true)
       }
     }
   }
@@ -176,20 +199,20 @@
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
   @import "../../assets/styles/flapCard";
+
   .flap-card-wrapper {
-    @include absCenter;
     z-index: 1000;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, .6);
     @include center;
-
+    @include absCenter;
     .flap-card-bg {
       position: relative;
       width: px2rem(64);
       height: px2rem(64);
       border-radius: px2rem(5);
-      background: #ffffff;
+      background: white;
       transform: scale(0);
       opacity: 0;
       &.animation {
@@ -217,26 +240,22 @@
         width: px2rem(48);
         height: px2rem(48);
         @include absCenter;
-
         .flap-card-circle {
           display: flex;
           width: 100%;
           height: 100%;
-
           .flap-card-semi-circle {
             flex: 0 0 50%;
-            height: 100%;
             width: 50%;
+            height: 100%;
             background-repeat: no-repeat;
             backface-visibility: hidden;
           }
-
           .flap-card-semi-circle-left {
             border-radius: px2rem(24) 0 0 px2rem(24);
             background-position: center right;
             transform-origin: right;
           }
-
           .flap-card-semi-circle-right {
             border-radius: 0 px2rem(24) px2rem(24) 0;
             background-position: center left;
@@ -260,7 +279,155 @@
         }
       }
     }
+    .book-card {
+      position: relative;
+      width: 65%;
+      max-width: px2rem(400);
+      box-sizing: border-box;
+      border-radius: px2rem(15);
+      background: white;
+      &.animation {
+        animation: scale .3s ease-in both;
+        @keyframes scale {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+      }
+      .book-card-wrapper {
+        width: 100%;
+        height: 100%;
+        margin-top: px2rem(20);
+        @include columnTop;
+        .img-wrapper {
+          width: 100%;
+          margin-top: px2rem(20);
+          @include center;
+          .img {
+            width: px2rem(90);
+            height: px2rem(130);
+          }
+        }
+        .content-wrapper {
+          padding: 0 px2rem(20);
+          margin-top: px2rem(20);
+          .content-title {
+            color: #333;
+            font-weight: bold;
+            font-size: px2rem(18);
+            line-height: px2rem(20);
+            text-align: center;
+            @include ellipsis2(2);
+          }
+          .content-author {
+            margin: px2rem(10) 0 px2rem(50) 0;
+            text-align: center;
+            max-height: px2rem(50);
+            overflow: hidden;
+            font-size: px2rem(30);
+          }
+          .content-category {
+            color: #999;
+            font-size: px2rem(14);
+            margin-top: px2rem(10);
+            text-align: center;
+          }
+        }
+        .read-btn {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          z-index: 1100;
+          width: 100%;
+          border-radius: 0 0 px2rem(15) px2rem(15);
+          padding: px2rem(15) 0;
+          text-align: center;
+          color: white;
+          font-size: px2rem(14);
+          background: $color-blue;
+        }
+      }
+    }
+    /*
+    .book-card {
+      position: relative;
+      width: 65%;
+      max-width: px2rem(400);
+      box-sizing: border-box;
+      border-radius: px2rem(15);
+      background: white;
+      &.animation {
+        animation: scale .3s ease-in both;
+        @keyframes scale {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+      }
+      .book-card-wrapper {
+        width: 100%;
+        height: 100%;
+        margin-bottom: px2rem(30);
+        @include columnTop;
+        .img-wrapper {
+          width: 100%;
+          margin-top: px2rem(20);
+          @include center;
+          .img {
+            width: px2rem(90);
+            height: px2rem(130);
+          }
+        }
+        .content-wrapper {
+          padding: 0 px2rem(20);
+          margin-top: px2rem(20);
+          .content-title {
+            color: #333;
+            font-weight: bold;
+            font-size: px2rem(18);
+            line-height: px2rem(20);
+            max-height: px2rem(40);
+            text-align: center;
+            @include ellipsis2(2)
+          }
+          .content-author {
+            margin-top: px2rem(10);
+            text-align: center;
+          }
+          .content-category {
+            color: #999;
+            font-size: px2rem(14);
+            margin-top: px2rem(10);
+            text-align: center;
+          }
+        }
+        .read-btn {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          z-index: 1100;
+          width: 100%;
+          border-radius: 0 0 px2rem(15) px2rem(15);
+          padding: px2rem(15) 0;
+          text-align: center;
+          color: white;
+          font-size: px2rem(14);
+          background: $color-blue;
+        }
+      }
+    }
 
+     */
     .close-btn-wrapper {
       position: absolute;
       left: 0;
@@ -268,15 +435,14 @@
       z-index: 1100;
       width: 100%;
       @include center;
-
       .icon-close {
         width: px2rem(45);
         height: px2rem(45);
         border-radius: 50%;
-        background-color: #333;
+        background: #333;
         font-size: px2rem(25);
+        color: white;
         @include center;
-        color: #ffffff;
       }
     }
   }

@@ -93,6 +93,9 @@ export const storeHomeMixin = {
       'setOffsetY',
       'setHotSearchOffsetY',
       'setFlapCardVisible',
-    ])
+    ]),
+    showBookDetail(book) {
+
+    }
   }
 }
